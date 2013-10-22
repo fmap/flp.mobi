@@ -1,0 +1,16 @@
+#!/bin/sh
+
+<I_01.html awk '
+  /Macros/ { getline 
+             gsub("], ","] \n")
+             gsub("^ *","")
+             print
+           }
+'| sed -r '
+  s/(.*): \["(.*)", ([0-9]+)][, \n]*/\\newcommand{\\\1}[\3]{\2}/;
+  s/\\\\/\\/g
+'| awk -F'[{}]' '
+  !($2 in a) { a[$2]
+               print 
+             }
+' >template/macros.tex

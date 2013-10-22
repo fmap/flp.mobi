@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby 
+
+require 'nokogiri'
+
+template = Nokogiri::HTML File.read('template/book.html')
+
+ARGV.each do |html|
+  document = Nokogiri::HTML File.read(html)
+  document = document.css('.document').children
+  document.css('span.tag').each do |tag|
+    tag.content = tag.content << ' '
+  end
+  document.css('footer').remove
+  template.at_css('body') << document
+end
+
+puts template.to_html

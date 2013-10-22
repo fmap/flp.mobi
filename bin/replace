@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+class String
+  def to_image 
+    bin = File.dirname(__FILE__)
+    cmd = [bin, 'eq2img'].join('/')
+    IO.popen([cmd, self]).read.chomp
+  end
+  def to_image_tag
+    ['<img src="', self, '">'].join
+  end
+  def escape
+    inspect[1..-2]
+  end
+  def tex2png!
+    [/\$+.*?\$+/, /\\begin{equation\*?}.*?\\end{equation\*?}/m].each do |pattern|
+      gsub!(pattern) { |equation| equation.escape.to_image.to_image_tag }
+    end; return self
+  end
+end
+
+ARGV.each do |html|
+  output = File.read(html).tex2png!
+  File.write html, output
+end
