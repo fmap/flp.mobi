@@ -16,11 +16,9 @@ iPocketKoboNook too.
 
 Okay, you're probably missing some dependencies. We're
 using [wget](https://www.gnu.org/software/wget/)
-to download the pages at CalTech, two tools from
-[TeXLive](https://www.tug.org/texlive/) to write image translations
-of `\LaTeX` equations, [Ruby](https://www.ruby-lang.org/en/)
-and [nokogiri](http://nokogiri.org/) to stitch pages together, and replace
-equations with links to the corresponding images,
+to download the pages at CalTech, [Ruby](https://www.ruby-lang.org/en/)
+and [nokogiri](http://nokogiri.org/) to process them (replacing equations
+with images using two tools from [TeXLive](https://www.tug.org/texlive/)), 
 [pandoc](http://johnmacfarlane.net/pandoc/) to write the result to
 a self-contained EPUB, and finally one of
 [Calibre](http://calibre-ebook.com/)'s command-line tools to convert that to
