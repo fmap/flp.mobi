@@ -19,9 +19,10 @@ using [wget](https://www.gnu.org/software/wget/)
 to download the pages at CalTech, two tools from
 [TeXLive](https://www.tug.org/texlive/) to write image translations
 of `\LaTeX` equations, [Ruby](https://www.ruby-lang.org/en/)
-and [nokogiri](http://nokogiri.org/) to reference those translations within the
-downloaded HTML, [pandoc](http://johnmacfarlane.net/pandoc/) to write the
-result to a self-contained EPUB, and finally one of
+and [nokogiri](http://nokogiri.org/) to stitch pages together, and replace
+equations with links to the corresponding images,
+[pandoc](http://johnmacfarlane.net/pandoc/) to write the result to
+a self-contained EPUB, and finally one of
 [Calibre](http://calibre-ebook.com/)'s command-line tools to convert that to
 MOBI..
 
