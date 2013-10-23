@@ -8,7 +8,13 @@ ARGV.each do |html|
   document = Nokogiri::HTML File.read(html)
   document = document.css('.document').children
   document.css('span.tag').each do |tag|
+    # Insert a separating space after chapter/figure numbers.
     tag.content = tag.content << ' '
+  end
+  document.xpath('//a[contains(@href,"#")]').each do |ref|
+    # Remove page reference from internal links.
+    href = ref.attribute('href')
+    href.value = href.value.sub(/^.*#/,?#)
   end
   document.css('footer').remove
   template.at_css('body') << document
