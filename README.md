@@ -21,7 +21,7 @@ to download the pages at CalTech, two tools from
 of `\LaTeX` equations, [Ruby](https://www.ruby-lang.org/en/)
 and [nokogiri](http://nokogiri.org/) to reference those translations within the
 downloaded HTML, [pandoc](http://johnmacfarlane.net/pandoc/) to write the
-result HTML to a self-contained EPUB, and finally one of
+result to a self-contained EPUB, and finally one of
 [Calibre](http://calibre-ebook.com/)'s command-line tools to convert that to
 MOBI..
 
