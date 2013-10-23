@@ -14,12 +14,7 @@ convert: replace
 	pandoc flp.html -o flp.epub
 	ebook-convert flp.epub flp.mobi
 
-upload:
-	sudo mount /dev/disk/by-label/Kindle /mnt/usb1
-	sudo cp flp.mobi /mnt/usb1/documents
-	sudo eject /mnt/usb1
-
 clean:
 	find * -print0 | grep -vzE '^(Makefile|bin|template)' | xargs -0 rm -fr
 
-all: dl convert upload
+all: dl convert
