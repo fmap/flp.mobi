@@ -13,9 +13,15 @@ class String
     inspect[1..-2]
   end
   def tex2png!
-    [/\$+.*?\$+/, /\\begin{equation\*?}.*?\\end{equation\*?}/m].each do |pattern|
+    delimiters = [
+      /\\begin{equation\*?}.*?\\end{equation\*?}/m,
+      /\\begin{align\*?}.*?\\end{align\*?}/m,
+      /\$+.*?\$+/m
+    ]
+    delimiters.each do |pattern|
       gsub!(pattern) { |equation| equation.escape.to_image.to_image_tag }
-    end; return self
+    end
+    return self
   end
 end
 
