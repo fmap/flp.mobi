@@ -4,38 +4,9 @@ require 'nokogiri'
 
 template = Nokogiri::HTML File.read('template/book.html')
 
-class Nokogiri::XML::Element
-  def columns
-    self.css('td') +
-    self.css('th')
-  end
-  def fill max
-    return self if columns.length.eql?(max)
-    self << Nokogiri::XML::Node.new('td', document)
-    return fill(max)
-  end
-end
-
 ARGV.each do |html|
   document = Nokogiri::HTML File.read(html)
   document = document.css('.document').children
-  document.css('span.tag').each do |tag|
-    # Insert a separating space after chapter/figure numbers.
-    tag.content = tag.content << ' '
-  end
-  document.css('table').each do |table|
-    # Pandoc's HTML reader's table parser only succeeds when each row 
-    # has an equal number of columns, so we modify tables prior to
-    # parsing. See <gh:flp.mobi/issues/3>.
-    rows = table.css('tr')
-    cols = rows.map(&:columns).max_by(&:length).length
-    rows.each { |row| row.fill(cols) }
-  end
-  document.xpath('//a[contains(@href,"#")]').each do |ref|
-    # Remove page reference from internal links.
-    href = ref.attribute('href')
-    href.value = href.value.sub(/^.*#/,?#)
-  end
   document.css('footer').remove
   template.at_css('body') << document
 end

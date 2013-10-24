@@ -10,7 +10,10 @@ concat:
 replace: macros concat
 	./bin/replace flp.html
 
-convert: replace
+preprocess: concat
+	./bin/mxml flp.html
+
+convert: replace preprocess
 	pandoc flp.html -o flp.epub
 	ebook-convert flp.epub flp.mobi
 
