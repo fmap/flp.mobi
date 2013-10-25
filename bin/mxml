@@ -28,6 +28,25 @@ ARGV.each do |html|
     cols = rows.map(&:columns).max_by(&:length).length
     rows.each { |row| row.fill(cols) }
   end
+  document.css('thead').each do |thead|
+    # Likewise, Pandoc dislikes tables with multiple header rows. Within the
+    # HTML FLP manuscript, ICIR these're stylistic rather than semantic: line
+    # breaks for headers. So we can just zip them together.
+    rows = thead.css('tr')
+    if rows.length > 1
+      hlen = rows.first.css('th').length
+      cols = Array.new(hlen) { Nokogiri::XML::Node.new('th', document) }
+      rows.each do |row|
+        row.css('th').each_with_index do |col,inx|
+          cols[inx].content += col.content 
+          cols[inx].content += ?\s
+        end
+      end
+      new_row = Nokogiri::XML::Node.new('tr', document)
+      cols.each do |c| c.parent = new_row end
+      thead.children = new_row
+    end
+  end
   document.xpath('//a[contains(@href,"#")]').each do |ref|
     # Remove page reference from internal links.
     href = ref.attribute('href')
