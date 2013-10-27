@@ -14,11 +14,21 @@ class Nokogiri::XML::Element
   end
 end
 
+class Nokogiri::XML::NodeSet
+  def each_column_with_index &block
+    each do |row|
+      row.columns.each_with_index do |cell, index|
+        block.call(cell, index)
+      end
+    end
+  end
+end
+
 ARGV.each do |html|
   document = Nokogiri::HTML File.read(html)
   document.css('span.tag').each do |tag|
     # Insert a separating space after chapter/figure numbers.
-    tag.content = tag.content << ' '
+    tag.content = tag.content << ?\s
   end
   document.css('table').each do |table|
     # Pandoc's HTML reader's table parser only succeeds when each row 
@@ -33,19 +43,16 @@ ARGV.each do |html|
     # HTML FLP manuscript, ICIR these're stylistic rather than semantic: line
     # breaks for headers. So we can just zip them together.
     rows = thead.css('tr')
-    if rows.length > 1
-      hlen = rows.first.css('th').length
-      cols = Array.new(hlen) { Nokogiri::XML::Node.new('th', document) }
-      rows.each do |row|
-        row.css('th').each_with_index do |col,inx|
-          cols[inx].content += col.content 
-          cols[inx].content += ?\s
-        end
-      end
-      new_row = Nokogiri::XML::Node.new('tr', document)
-      cols.each do |c| c.parent = new_row end
-      thead.children = new_row
+    next if rows.length.eql?(1)
+    width    = rows[0].columns.length
+    columns  = Array.new(width) { Nokogiri::XML::Node.new('th', document) }
+    new_row  = Nokogiri::XML::Node.new('tr', document)
+    rows.each_column_with_index do |column,index|
+      content = column.content + ?\s
+      columns[index].content += content
+      columns[index].parent   = new_row
     end
+    thead.children = new_row
   end
   document.xpath('//a[contains(@href,"#")]').each do |ref|
     # Remove page reference from internal links.
