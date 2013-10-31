@@ -2,57 +2,11 @@
 
 require 'nokogiri'
 
-class Nokogiri::XML::Element
-  def columns
-    self.css('td') +
-    self.css('th')
-  end
-  def fill max
-    return self if columns.length.eql?(max)
-    self << Nokogiri::XML::Node.new('td', document)
-    return fill(max)
-  end
-end
-
-class Nokogiri::XML::NodeSet
-  def each_column_with_index &block
-    each do |row|
-      row.columns.each_with_index do |cell, index|
-        block.call(cell, index)
-      end
-    end
-  end
-end
-
 ARGV.each do |html|
   document = Nokogiri::HTML File.read(html)
   document.css('span.tag').each do |tag|
     # Insert a separating space after chapter/figure numbers.
     tag.content = tag.content << ?\s
-  end
-  document.css('table').each do |table|
-    # Pandoc's HTML reader's table parser only succeeds when each row 
-    # has an equal number of columns, so we modify tables prior to
-    # parsing. See <gh:flp.mobi/issues/3>.
-    rows = table.css('tr')
-    cols = rows.map(&:columns).max_by(&:length).length
-    rows.each { |row| row.fill(cols) }
-  end
-  document.css('thead').each do |thead|
-    # Likewise, Pandoc dislikes tables with multiple header rows. Within the
-    # HTML FLP manuscript, ICIR these're stylistic rather than semantic: line
-    # breaks for headers. So we can just zip them together.
-    rows = thead.css('tr')
-    next if rows.length.eql?(1)
-    width    = rows[0].columns.length
-    columns  = Array.new(width) { Nokogiri::XML::Node.new('th', document) }
-    new_row  = Nokogiri::XML::Node.new('tr', document)
-    rows.each_column_with_index do |column,index|
-      content = column.content + ?\s
-      columns[index].content += content
-      columns[index].parent   = new_row
-    end
-    thead.children = new_row
   end
   document.xpath('//a[contains(@href,"#")]').each do |ref|
     # Remove page reference from internal links.
