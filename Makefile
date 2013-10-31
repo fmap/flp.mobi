@@ -15,7 +15,7 @@ preprocess: concat
 
 epub: replace preprocess
 	cp -r ./template/epub/* .
-	zip flp.epub mimetype META-INF/* content.opf flp.html `find img -type f`
+	grep -oP '(?<=img src=")[^"]*(?=")' flp.html | xargs zip flp.epub mimetype META-INF/* content.opf flp.html
 
 mobi: epub
 	ebook-convert flp.epub flp.mobi
