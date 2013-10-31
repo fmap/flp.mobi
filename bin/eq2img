@@ -4,7 +4,13 @@ quietly() {
   $@ >&/dev/null
 }
 
-BASE_DIRECTORY="$(dirname $0)/.."
+normalise() {
+  sed -r 's|[^/]+/\.{2}||;
+          s|/$||;
+  '
+}
+
+BASE_DIRECTORY="$(normalise <<<"$(dirname $0)/..")"
 IMAGE_DIRECTORY="$BASE_DIRECTORY/img"
 
 if [[ ! -d "$IMAGE_DIRECTORY" ]]; then

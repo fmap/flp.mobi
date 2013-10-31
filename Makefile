@@ -13,9 +13,14 @@ replace: macros concat
 preprocess: concat
 	./bin/mxml flp.html
 
-convert: replace preprocess
-	pandoc flp.html -o flp.epub
+epub: replace preprocess
+	cp -r ./template/epub/* .
+	zip flp.epub mimetype META-INF/* content.opf flp.html `find img -type f`
+
+mobi: epub
 	ebook-convert flp.epub flp.mobi
+
+convert: epub mobi
 
 clean:
 	find * -print0 | grep -vzE '^(Makefile|bin|template)' | xargs -0 rm -fr
