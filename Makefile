@@ -23,6 +23,6 @@ mobi: epub
 convert: epub mobi
 
 clean:
-	find * -print0 | grep -vzE '^(Makefile|bin|template)' | xargs -0 rm -fr
+	git clean -Xf
 
 all: dl convert
