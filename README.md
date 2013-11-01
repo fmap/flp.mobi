@@ -14,12 +14,12 @@ iPocketKoboNook too.
 
 ## "No, really."
 
-Okay, you're probably missing some dependencies. We're
-using [wget](https://www.gnu.org/software/wget/)
-to download the pages at CalTech, [Ruby](https://www.ruby-lang.org/en/)
-and [nokogiri](http://nokogiri.org/) to process them (replacing equations
-with images using two tools from [TeXLive](https://www.tug.org/texlive/)), 
-[pandoc](http://johnmacfarlane.net/pandoc/) to write the result to
+Okay, you're probably missing some dependencies. We're using
+[wget](https://www.gnu.org/software/wget/) to download the pages at CalTech,
+two tools from [TeXLive](https://www.tug.org/texlive/) to replace equations
+with images in each chapter, a couple [Ruby](https://www.ruby-lang.org/en/) scripts (using
+[`nokogiri`](http://nokogiri.org/) and
+[`mime/types`](http://mime-types.rubyforge.org/)) to munge the result into
 a self-contained EPUB, and finally one of
 [Calibre](http://calibre-ebook.com/)'s command-line tools to convert that to
 MOBI..
