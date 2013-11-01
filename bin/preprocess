@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+require 'nokogiri'
+
+class Equation < String
+  def to_image 
+    str = self.inspect[1..-2]
+    bin = File.dirname(__FILE__)
+    cmd = [bin, 'eq2img'].join('/')
+    IO.popen([cmd, str]).read.chomp
+  end
+  def for_html
+    ['<img src="', self.to_image, '">'].join
+  end
+end
+
+class String
+  def slim
+    html = self.to_html.css('.document').children
+    html.css('footer').remove
+    return html.to_html
+  end
+  def prettify
+    html = self.to_html
+    html.css('span.tag').each do |tag| 
+      tag.content = tag.content << ?\s 
+    end
+    return html.to_html
+  end
+  def tex2png
+    delimiters = [
+      /\\begin{equation\*?}.*?\\end{equation\*?}/m,
+      /\\begin{align\*?}.*?\\end{align\*?}/m,
+      /\$+.*?\$+/m
+    ]
+    delimiters.each do |pattern|
+      gsub!(pattern) do |equation| 
+        Equation.new(equation).for_html
+      end
+    end
+    return self
+  end
+  def to_html
+    Nokogiri::HTML self
+  end
+end
+
+ARGV.each do |html|
+  output = File.read(html).slim.prettify.tex2png
+  File.write html, output
+end

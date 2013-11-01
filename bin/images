@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./bin/chapters | xargs grep -hoP '(?<=img src=")[^"]*(?=")' 

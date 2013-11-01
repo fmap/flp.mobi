@@ -8,9 +8,7 @@
     <dc:language>en</dc:language>
   </metadata>
   <manifest>
-    <item id="flp" href="flp.html" media-type="application/xhtml+xml"/>
   </manifest>
   <spine>
-    <itemref idref="flp">
   </spine>
 </package>

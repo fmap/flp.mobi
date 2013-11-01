@@ -1,21 +1,14 @@
-dl:
+dl: clean
 	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/
 
-macros:
-	./bin/macros
+preprocess:
+	./bin/macros < I_01.html > template/macros.tex
+	./bin/chapters | xargs ./bin/preprocess
 
-concat:
-	find * -maxdepth 0 -type f | grep -P 'I_\d+\.html' | xargs bin/concat > flp.html
-
-replace: macros concat
-	./bin/replace flp.html
-
-preprocess: concat
-	./bin/mxml flp.html
-
-epub: replace preprocess
+epub: preprocess
 	cp -r ./template/epub/* .
-	grep -oP '(?<=img src=")[^"]*(?=")' flp.html | xargs zip flp.epub mimetype META-INF/* content.opf flp.html
+	./bin/opf content.opf
+	(./bin/chapters; ./bin/images) | zip -@ flp.epub mimetype META-INF/* content.opf
 
 mobi: epub
 	ebook-convert flp.epub flp.mobi
@@ -23,6 +16,6 @@ mobi: epub
 convert: epub mobi
 
 clean:
-	git clean -Xf
+	git clean -Xfd
 
 all: dl convert

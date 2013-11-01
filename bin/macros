@@ -1,6 +1,6 @@
 #!/bin/sh
 
-<I_01.html awk '
+awk '
   /Macros/ { getline 
              gsub("], ","] \n")
              gsub("^ *","")
@@ -13,4 +13,4 @@
   !($2 in a) { a[$2]
                print 
              }
-' >template/macros.tex
+'

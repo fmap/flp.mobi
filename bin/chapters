@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find * -maxdepth 0 -type f | grep -P 'I_\d+\.html'
