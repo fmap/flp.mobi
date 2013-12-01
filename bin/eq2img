@@ -26,7 +26,7 @@ TEMPLATE="$BASE_DIRECTORY/template/equation.tex"
 if [[ ! -f "$BASE_IMAGE_FILENAME" ]]; then
   sed "s|{{T}}|$1|" "$TEMPLATE" | 
     quietly latex -jobname="$BASE_FILENAME" -output-directory="$IMAGE_DIRECTORY"
-  quietly dvipng -D250 -o "$PNG" "$DVI" && echo "$PNG"
-else
-  echo "$PNG"
+  quietly dvipng -D250 -o "$PNG" "$DVI"
 fi
+
+echo "$PNG"

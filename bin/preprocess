@@ -5,6 +5,7 @@ require 'nokogiri'
 class Equation < String
   def to_image 
     str = self.inspect[1..-2]
+    str.sub!(/\label{Eq:I:(\d+):(\d+)}/,'tag{\1:\2}')
     bin = File.dirname(__FILE__)
     cmd = [bin, 'eq2img'].join('/')
     IO.popen([cmd, str]).read.chomp
