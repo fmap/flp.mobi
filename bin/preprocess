@@ -14,6 +14,14 @@ class Equation < String
   end
 end
 
+class SVG < String
+  def to_png
+    res = sub(/svg$/,'png')
+    system ['convert', self, res].join(?\s)
+    return res
+  end
+end
+
 class String
   def slim
     html = self.to_html.css('.document').children
@@ -40,12 +48,18 @@ class String
     end
     return self
   end
+  def svg2png
+    gsub!(/(?<=src=").+\.svg(?=">)/) do |path|
+      SVG.new(path).to_png
+    end
+    return self
+  end
   def to_html
     Nokogiri::HTML self
   end
 end
 
 ARGV.each do |html|
-  output = File.read(html).slim.prettify.tex2png
+  output = File.read(html).slim.prettify.tex2png.svg2png
   File.write html, output
 end
