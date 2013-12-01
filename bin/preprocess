@@ -17,7 +17,8 @@ end
 class SVG < String
   def to_png
     res = sub(/svg$/,'png')
-    system ['convert', self, res].join(?\s)
+    opts = '-density 120 +antialias -background none'
+    system ['convert', opts, self, res].join(?\s)
     return res
   end
 end
