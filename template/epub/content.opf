@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package version="3.0" xml:lang="en" xmlns="http://www.idpf.org/2007/opf" unique-identifier="pub-id">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <dc:title>The Feynman Lectures on Physics, Volume I</dc:title>
+    <dc:title>The Feynman Lectures on Physics, Volumes {I,III}</dc:title>
     <dc:creator id="creator">Richard Feynman</dc:creator>
     <dc:creator id="creator">Robert B. Leighton</dc:creator>
     <dc:creator id="creator">Matthew Sands</dc:creator>
