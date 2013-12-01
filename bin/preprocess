@@ -48,8 +48,8 @@ class String
     end
     return self
   end
-  def svg2png
-    gsub!(/(?<=src=").+\.svg(?=">)/) do |path|
+  def svg2png # Tables should be rasterized with ImageMagick.
+    gsub!(/(?<=src=").+tc_big\.svg(?=">)/) do |path|
       SVG.new(path).to_png
     end
     return self
