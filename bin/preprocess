@@ -1,42 +1,9 @@
 #!/usr/bin/env ruby
+$:.unshift(File.join File.dirname(__FILE__), '..')
 
-require 'cgi'
 require 'nokogiri'
-
-class Equation
-  def initialize str
-    @tex = str
-    remove_fragments.add_tag
-  end
-  def add_tag
-    if @tex.match(/\label{Eq:I:(\d+):(\d+)}/)
-      @tex.sub! ?}, "}\\tag{#{$1}.#{$2}}"
-    end
-    return self
-  end
-  def remove_fragments
-    @tex = CGI::unescapeHTML @tex
-    return self
-  end
-  def to_image
-    str = @tex.inspect[1..-2]
-    bin = File.dirname(__FILE__)
-    cmd = [bin, 'eq2img'].join('/')
-    IO.popen([cmd, str]).read.chomp
-  end
-  def for_html
-    ['<img src="', to_image, '">'].join
-  end
-end
-
-class SVG < String
-  def to_png
-    res = sub(/svg$/,'png')
-    opts = '-density 120 +antialias -background none'
-    system ['convert', opts, self, res].join(?\s)
-    return res
-  end
-end
+require 'lib/svg'
+require 'lib/equation'
 
 class String
   def slim
