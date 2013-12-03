@@ -1,17 +1,29 @@
 #!/usr/bin/env ruby
 
+require 'cgi'
 require 'nokogiri'
 
-class Equation < String
-  def to_image 
-    str = self.inspect[1..-2]
-    str.sub!(/\label{Eq:I:(\d+):(\d+)}/,'tag{\1:\2}')
+class Equation
+  def initialize str
+    @tex = str
+    remove_fragments.add_tag
+  end
+  def add_tag
+    @tex.sub!(/\label{Eq:I:(\d+):(\d+)}/,'tag{\1.\2}')
+    return self
+  end
+  def remove_fragments
+    @tex = CGI::unescapeHTML @tex
+    return self
+  end
+  def to_image
+    str = @tex.inspect[1..-2]
     bin = File.dirname(__FILE__)
     cmd = [bin, 'eq2img'].join('/')
     IO.popen([cmd, str]).read.chomp
   end
   def for_html
-    ['<img src="', self.to_image, '">'].join
+    ['<img src="', to_image, '">'].join
   end
 end
 
