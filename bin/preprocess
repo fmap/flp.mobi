@@ -9,7 +9,9 @@ class Equation
     remove_fragments.add_tag
   end
   def add_tag
-    @tex.sub!(/\label{Eq:I:(\d+):(\d+)}/,'tag{\1.\2}')
+    if @tex.match(/\label{Eq:I:(\d+):(\d+)}/)
+      @tex.sub! ?}, "}\\tag{#{$1}.#{$2}}"
+    end
     return self
   end
   def remove_fragments
