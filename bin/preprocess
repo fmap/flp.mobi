@@ -4,45 +4,11 @@ $:.unshift(File.join File.dirname(__FILE__), '..')
 require 'nokogiri'
 require 'lib/svg'
 require 'lib/equation'
-
-class String
-  def slim
-    html = self.to_html.css('.document').children
-    html.css('footer').remove
-    return html.to_html
-  end
-  def prettify
-    html = self.to_html
-    html.css('span.tag').each do |tag| 
-      tag.content = tag.content << ?\s 
-    end
-    return html.to_html
-  end
-  def tex2png
-    delimiters = [
-      /\\begin{equation\*?}.*?\\end{equation\*?}/m,
-      /\\begin{align\*?}.*?\\end{align\*?}/m,
-      /\$+.*?\$+/m
-    ]
-    delimiters.each do |pattern|
-      gsub!(pattern) do |equation| 
-        Equation.new(equation).for_html
-      end
-    end
-    return self
-  end
-  def svg2png
-    gsub!(/(?<=src=").+\.svg(?=">)/) do |path|
-      SVG.new(path).to_png
-    end
-    return self
-  end
-  def to_html
-    Nokogiri::HTML self
-  end
-end
+require 'lib/pattern'
+require 'lib/chapter'
 
 ARGV.each do |html|
-  output = File.read(html).slim.prettify.tex2png.svg2png
+  document = File.read(html)
+  output = Chapter.new(document).take_document.separate_tags.replace_equations.rasterize_vectors
   File.write html, output
 end
