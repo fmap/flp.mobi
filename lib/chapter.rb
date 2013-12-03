@@ -1,6 +1,8 @@
 $:.unshift(File.join File.dirname(__FILE__), '..')
 
 require 'nokogiri'
+require 'lib/equation'
+require 'lib/svg'
 require 'lib/pattern'
 
 class Chapter < String
