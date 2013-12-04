@@ -20,4 +20,6 @@ convert: epub mobi
 clean:
 	git clean -Xfd
 
-all: dl convert
+all: 
+	make convert 'v=I'
+	make convert 'v=III'
