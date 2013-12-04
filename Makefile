@@ -21,5 +21,5 @@ clean:
 	git clean -Xfd
 
 all: 
-	make convert 'v=I'
-	make convert 'v=III'
+	$(MAKE) convert 'v=I'
+	$(MAKE) convert 'v=III'
