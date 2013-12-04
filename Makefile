@@ -20,6 +20,6 @@ convert: epub mobi
 clean:
 	git clean -Xfd
 
-all: 
+all: dl
 	$(MAKE) convert 'v=I'
 	$(MAKE) convert 'v=III'
