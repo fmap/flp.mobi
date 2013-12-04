@@ -6,6 +6,10 @@ class OPF
   def initialize path
     @xml = Nokogiri::XML File.read(path)
   end
+  def title= title
+    sel, ns = '//dc:title', {dc:'http://purl.org/dc/elements/1.1/'}
+    @xml.xpath(sel, ns).children[0].content = title
+  end
   def add_chapter filename
     id, type, href = generics filename
     add_manifest id, type, href
