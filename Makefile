@@ -13,7 +13,7 @@ epub: preprocess
 	(./bin/chapters $(v); ./bin/images $(v)) | zip -@ flp$(v).epub mimetype META-INF/* content.opf
 
 mobi: epub
-	ebook-convert flp($v).epub flp$(v).mobi
+	ebook-convert flp$(v).epub flp$(v).mobi
 
 convert: epub mobi
 
