@@ -3,13 +3,13 @@ $:.unshift(File.join File.dirname(__FILE__), '..')
 
 require 'lib/opf'
 
-def run cmd, vol
-  IO.popen [cmd, vol].join(?\s) 
+def with cmd, vol
+  IO.popen([cmd,vol].join ?\s).map(&:chomp)
 end
 
-vol = ARGV.first; ARGV.shift
-opf = OPF.new ARGV.first
+vol, path = ARGV[0..1]
+opf = OPF.new path
 opf.title = "The Feynman Lectures on Physics, Volume #{vol}"
-run('./bin/chapters',vol).map(&:chomp).each {|filename| opf.add_chapter filename}
-run('./bin/images',vol).map(&:chomp).each {|filename| opf.add_image filename}
-File.write ARGV.first, opf.xml.to_xml
+with('./bin/chapters',vol).each {|p| opf.add_chapter p}
+with('./bin/images',  vol).each {|p| opf.add_image p}
+File.write path, opf.xml.to_xml
