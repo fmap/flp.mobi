@@ -1,5 +1,9 @@
 v=I
 
+all: dl
+	$(MAKE) convert 'v=I'
+	$(MAKE) convert 'v=III'
+
 dl: clean
 	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/
 
@@ -19,7 +23,3 @@ convert: epub mobi
 
 clean:
 	git clean -Xfd
-
-all: dl
-	$(MAKE) convert 'v=I'
-	$(MAKE) convert 'v=III'
