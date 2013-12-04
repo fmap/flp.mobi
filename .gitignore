@@ -2,7 +2,7 @@
 css/
 img/
 template/macros.tex
-flp.*
+flp*.*
 META-INF/
 content.opf
 mimetype
