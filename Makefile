@@ -4,8 +4,9 @@ all: dl
 	$(MAKE) convert 'v=I'
 	$(MAKE) convert 'v=III'
 
-dl: clean
-	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/
+dl: 
+	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/; true
+	# https://github.com/fmap/flp.mobi/issues/9
 
 preprocess:
 	./bin/macros < $(v)_01.html > template/macros.tex
