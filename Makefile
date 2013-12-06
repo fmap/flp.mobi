@@ -1,12 +1,11 @@
 v=I
 
-all: dl
+all: I_01.html III_01.html
 	$(MAKE) convert 'v=I'
 	$(MAKE) convert 'v=III'
 
-dl: clean
-	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/; true
-	# https://github.com/fmap/flp.mobi/issues/9
+%.html: 
+	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/ || true
 
 preprocess:
 	./bin/macros < $(v)_01.html > template/macros.tex
