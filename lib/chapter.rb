@@ -7,31 +7,39 @@ require 'lib/pattern'
 
 class Chapter < String
   def take_document
-    html = self.to_html.css('.document').children
+    return self if processed?
+    html = self.to_html
+    html = html.css('.document').children 
     html.css('footer').remove
-    self.replace html.to_html
+    replace html.to_s
   end
   def separate_tags
+    return self if processed?
     html = self.to_html
     html.css('span.tag').each do |tag| 
       tag.content = tag.content << ?\s 
     end
-    self.replace html.to_html
+    replace html.to_s
   end
   def replace_equations
+    return self if processed?
     Pattern::tex.each do |pattern|
       gsub!(pattern) do |equation|
         Equation.new(equation).for_html
       end
-    end
-    return self
+    end; return self
   end
   def rasterize_vectors
+    return self if processed?
     gsub!(Pattern::svg) do |path|
       SVG.new(path).to_png
     end
   end
   def to_html
     Nokogiri::HTML self
+  end
+  def processed?
+    html = self.to_html
+    [html.css('.document').empty?, html.css('span.tag')[0].text.include?(?\s)].reduce{|x,y| x or y}
   end
 end
