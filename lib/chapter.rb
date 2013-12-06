@@ -40,9 +40,9 @@ class Chapter < String
   end
   def processed?
     html = self.to_html
-    conditions = [
+    conditions = [ 
       html.css('.document').empty?,
-      !html.css('span.tag').empty? && html.css('span.tag')[0].text.include?(?\s)
-    ]; conditions.reduce { |x,y| x or y }
+      html.css('span.tag').empty? || html.css('span.tag')[0].text.include?(?\s)
+    ]; conditions.reduce { |x,y| x and y }
   end
 end
