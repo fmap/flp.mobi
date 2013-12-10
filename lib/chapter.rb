@@ -42,6 +42,8 @@ class Chapter < String
     html = self.to_html
     conditions = [ 
       html.css('.document').empty?,
+      !(self=~Pattern::tex.first),
+      !(self=~Pattern::svg),
       html.css('span.tag').empty? || html.css('span.tag')[0].text.include?(?\s)
     ]; conditions.reduce { |x,y| x and y }
   end
