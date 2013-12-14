@@ -6,11 +6,7 @@ read them offline on your Kindle. We use EPUB as an intermediate
 representation, so likelihood is you'll get something working on your
 iPocketKoboNook too.
 
-##### "How do I run it?"
-
-    % make
-
-##### "No, really."
+##### "How do I create the MOBI format?"
 
 Okay, you're probably missing some dependencies. We're using
 [wget](https://www.gnu.org/software/wget/) to download the pages at CalTech,
@@ -22,7 +18,30 @@ to munge the result into a self-contained EPUB, and finally one of
 [Calibre](http://calibre-ebook.com/)'s command-line tools to convert that to
 MOBI..
 
-(Sorry.)
+
+1. run make in the command line and a bunch of `*.html` files will be created [will take a few minutes]
+
+    ```
+    make
+    ```
+
+1. [download Calibre](http://calibre-ebook.com/download)
+1. install the [command line tools of Calibre](http://manual.calibre-ebook.com/cli/cli-index.html)
+
+    ```
+    Preferences > Advanced > Miscellaneous > click install command line tools 
+    ```
+1. combine all the created `*.html` files into one file
+
+    ```
+    cat *.html >> feynman-lecture.html
+    ```
+1. run the installed command line tool with [`ebook-convert`](http://manual.calibre-ebook.com/cli/ebook-convert.html) [about 20-30 minutes]
+
+    ```
+    ebook-convert feynman-lecture.html feynman-lectures.mobi
+    ```
+
 
 ##### "May I..?"
 
