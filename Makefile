@@ -7,7 +7,10 @@ all: I_01.html III_01.html
 %.html: 
 	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/ || true
 
-preprocess:
+gems: Gemfile
+	bundle install
+
+preprocess: gems
 	./bin/macros < $(v)_01.html > template/macros.tex
 	./bin/chapters $(v) | xargs ./bin/preprocess
 
