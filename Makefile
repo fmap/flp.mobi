@@ -2,6 +2,7 @@ v=I
 
 all: I_01.html III_01.html
 	$(MAKE) convert 'v=I'
+	$(MAKE) convert 'v=II'
 	$(MAKE) convert 'v=III'
 
 %.html: 
