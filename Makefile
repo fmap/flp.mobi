@@ -1,13 +1,14 @@
 v=I
 prereqs=zip bundle wget ebook-convert
+vols=I II III
 
 all: test-prereqs I_01.html II_01.html III_01.html
-	$(MAKE) convert 'v=I'
-	$(MAKE) convert 'v=II'
-	$(MAKE) convert 'v=III'
+	for volume in $(vols);  \
+		do $(MAKE) convert v=$$volume;  \
+	done
 
 test-prereqs:
-	for p in $(prereqs); do which $$p; done
+	which $(prereqs)
 
 %.html: 
 	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/ || true
