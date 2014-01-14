@@ -11,7 +11,7 @@ test-prereqs:
 	which $(prereqs)
 
 %.html: 
-	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/ || true
+	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/{I,II,III}_toc.html || true
 
 gems: Gemfile
 	bundle install
