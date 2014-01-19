@@ -15,7 +15,7 @@ class Equation
     @tex = CGI::unescapeHTML @tex
   end
   def to_image
-    str = @tex.inspect[1..-2].gsub('&') {'\&'} #sed handles & as a special character.
+    str = @tex.inspect[1..-2].gsub(?&,'\&') #sed handles & as a special character.
     bin = File.join File.dirname(__FILE__), '..', 'bin'
     cmd = [bin, 'eq2img'].join('/')
     IO.popen([cmd, str]).read.chomp
