@@ -1,3 +1,4 @@
+SHELL=/bin/bash #for shell expansion in %.html rule.
 v=I
 prereqs=zip bundle wget ebook-convert
 vols=I II III
