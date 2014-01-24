@@ -18,7 +18,8 @@ PNG="$BASE_IMAGE_FILENAME.png"
 TEMPLATE="$BASE_DIRECTORY/template/equation.tex"
 
 if [[ ! -f "$BASE_IMAGE_FILENAME" ]]; then
-  sed "s|{{T}}|$1|" "$TEMPLATE" | 
+  RS=$'\031'
+  sed "s$RS{{T}}$RS$1$RS" "$TEMPLATE" | 
     quietly latex -jobname="$BASE_FILENAME" -output-directory="$IMAGE_DIRECTORY"
   quietly dvipng -D250 -o "$PNG" "$DVI"
 fi

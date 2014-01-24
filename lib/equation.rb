@@ -12,10 +12,10 @@ class Equation
     end
   end
   def remove_fragments
-    @tex = CGI::unescapeHTML @tex
+    @tex = CGI::unescapeHTML(@tex).gsub(?&,'\&') 
   end
   def to_image
-    str = @tex.inspect[1..-2].gsub(?&,'\&') #sed handles & as a special character.
+    str = @tex.inspect[1..-2]
     bin = File.join File.dirname(__FILE__), '..', 'bin'
     cmd = [bin, 'eq2img'].join('/')
     IO.popen([cmd, str]).read.chomp
