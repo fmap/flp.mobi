@@ -2,17 +2,22 @@ SHELL=/bin/bash #for shell expansion in %.html rule.
 v=I
 prereqs=zip bundle wget ebook-convert
 vols=I II III
+root=http://www.feynmanlectures.caltech.edu/
 
 all: test-prereqs I_01.html II_01.html III_01.html
-	for volume in $(vols);  \
-		do $(MAKE) convert v=$$volume;  \
+	for volume in $(vols); do \
+		$(MAKE) convert v=$$volume;  \
 	done
 
 test-prereqs:
 	which $(prereqs)
 
 %.html: 
-	wget -c -rnH -k -np http://www.feynmanlectures.caltech.edu/{I,II,III}_toc.html || true
+	for volume in $(vols); do \
+		curl -s "$(root)""$$volume"_toc.html\
+			| awk -F'[,)]' '/Goto.*Chapter/{printf "%02d\n", $$2}'\
+			| xargs -I, wget -e robots=off -c -rnH -k -np "$(root)""$$volume""_,.html";\
+	done; true
 
 gems: Gemfile
 	bundle install
