@@ -11,7 +11,7 @@ if [[ ! -d "$IMAGE_DIRECTORY" ]]; then
   mkdir -p "$IMAGE_DIRECTORY";
 fi
 
-BASE_FILENAME="$(md5sum <<< "$1" | cut -d' ' -f1)"
+BASE_FILENAME=$(md5sum "$1" | awk NF=1)
 BASE_IMAGE_FILENAME="$IMAGE_DIRECTORY/$BASE_FILENAME"
 DVI="$BASE_IMAGE_FILENAME.dvi"
 PNG="$BASE_IMAGE_FILENAME.png"
